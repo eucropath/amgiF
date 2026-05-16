@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FleetSense — AI Fleet Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#2563EB;
+  --blue-dark:#1E40AF;
+  --blue-mid:#3B82F6;
+  --blue-light:#EFF6FF;
+  --blue-border:#BFDBFE;
+  --green:#16A34A;
+  --green-light:#DCFCE7;
+  --green-border:#86EFAC;
+  --warning:#D97706;
+  --warning-light:#FEF3C7;
+  --warning-border:#FDE68A;
+  --danger:#DC2626;
+  --danger-light:#FEE2E2;
+  --danger-border:#FECACA;
+  --purple:#7C3AED;
+  --purple-light:#F5F3FF;
+  --text:#111827;
+  --text-2:#374151;
+  --muted:#6B7280;
+  --muted-2:#9CA3AF;
+  --border:#E5E7EB;
+  --bg:#F3F4F6;
+  --white:#FFFFFF;
+  --card-r:16px;
+  --pill-r:9999px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+  background:#D1D5DB;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* ── PHONE SHELL ── */
+.phone{
+  width:390px;
+  height:844px;
+  background:var(--bg);
+  border-radius:44px;
+  overflow:hidden;
+  box-shadow:
+    0 0 0 2px #9CA3AF,
+    0 40px 100px rgba(0,0,0,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.3);
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+/* status bar */
+.status-bar{
+  background:var(--blue);
+  padding:12px 20px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  font-weight:600;
+  color:white;
+  flex-shrink:0;
+}
+.status-right{display:flex;gap:5px;align-items:center}
+.status-right svg{width:14px;height:14px;fill:white}
+
+/* ── HEADER ── */
+.header{
+  background:var(--blue);
+  padding:10px 16px 18px;
+  color:white;
+  flex-shrink:0;
+}
+.header-row{display:flex;align-items:center;justify-content:space-between}
+.header-brand{text-align:center}
+.header-brand .name{font-weight:800;font-size:18px;letter-spacing:-.03em}
+.header-brand .sub{font-size:11px;opacity:.85;margin-top:1px}
+.header-icon-btn{
+  width:36px;height:36px;
+  border:none;background:rgba(255,255,255,.15);
+  border-radius:10px;color:white;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;
+  position:relative;
+}
+.header-icon-btn:hover{background:rgba(255,255,255,.25)}
+.badge{
+  position:absolute;top:-5px;right:-5px;
+  background:var(--danger);color:white;
+  border-radius:var(--pill-r);
+  font-size:10px;font-weight:700;
+  min-width:18px;height:18px;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--blue);
+}
+
+/* ── CONTENT SCROLL AREA ── */
+.scroll-area{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  background:var(--bg);
+  padding:0 0 80px;
+  scroll-behavior:smooth;
+}
+.scroll-area::-webkit-scrollbar{width:3px}
+.scroll-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;
+  background:white;
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(5,1fr);
+  padding:8px 4px 20px;
+  flex-shrink:0;
+  z-index:10;
+}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;
+  color:var(--muted);font-size:10px;font-weight:500;
+  padding:4px 2px;
+  font-family:inherit;
+}
+.nav-btn.active{color:var(--blue)}
+.nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active svg{stroke:var(--blue)}
+
+/* ── PAGE TITLE ── */
+.page-head{padding:16px 16px 0}
+.page-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.03em}
+.page-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ── CARDS ── */
+.card{
+  background:white;
+  border-radius:var(--card-r);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.card-body{padding:14px}
+.card + .card{margin-top:10px}
+
+/* ── STAT GRID ── */
+.stat-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:14px 16px;
+}
+.stat-card{
+  background:white;border-radius:var(--card-r);
+  border:1px solid var(--border);
+  padding:14px;
+}
+.stat-label{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:6px}
+.stat-value{font-size:20px;font-weight:800;margin-top:6px;letter-spacing:-.03em;color:var(--text)}
+.stat-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.stat-icon svg{width:15px;height:15px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── AI BOX ── */
+.ai-box{
+  margin:0 16px;
+  background:#EFF6FF;
+  border:1px solid var(--blue-border);
+  border-radius:var(--card-r);
+  padding:14px;
+}
+.ai-box-title{font-size:13px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0}
+.ai-box p{font-size:12.5px;color:var(--text-2);margin-top:6px;line-height:1.55}
+.ai-link{color:var(--blue);font-weight:600;font-size:12.5px;display:inline-block;margin-top:6px}
+
+/* ── RECENT ALERTS ── */
+.section-title{font-size:14px;font-weight:700;color:var(--text);padding:14px 16px 8px}
+.alert-item{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 16px;
+  border-bottom:1px solid var(--border);
+  background:white;
+}
+.alert-item:last-child{border-bottom:none}
+.alert-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.alert-dot.red{background:var(--danger)}
+.alert-dot.yellow{background:var(--warning)}
+.alert-dot.green{background:var(--green)}
+.alert-dot.blue{background:var(--blue)}
+.alert-text{flex:1}
+.alert-text strong{font-size:13px;font-weight:700;color:var(--text)}
+.alert-text span{font-size:12px;color:var(--muted);display:block;margin-top:1px}
+.alert-time{font-size:11px;color:var(--muted-2);white-space:nowrap}
+
+/* ── MAP PLACEHOLDER ── */
+.map-box{
+  margin:14px 16px 0;
+  background:#D9E8EF;
+  border-radius:var(--card-r);
+  height:140px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #BFD4DE;
+}
+.map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:28px 28px}
+.map-dot{width:10px;height:10px;background:#16A34A;border-radius:50%;position:absolute;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.map-pin{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
+  width:36px;height:36px;
+  background:white;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.map-pin svg{width:18px;height:18px;fill:var(--muted);stroke:none}
+.map-label{
+  position:absolute;bottom:10px;left:0;right:0;
+  text-align:center;font-size:12px;font-weight:600;color:var(--text-2)
+}
+
+/* ── VEHICLE CARDS ── */
+.vehicle-list{padding:10px 16px}
+.vehicle-card{
+  background:white;border-radius:var(--card-r);
+  border:1px solid var(--border);
+  padding:12px 14px;
+  margin-bottom:10px;
+}
+.vehicle-top{display:flex;justify-content:space-between;align-items:flex-start}
+.vehicle-name{font-size:14px;font-weight:700;color:var(--text)}
+.vehicle-driver{font-size:12px;color:var(--muted);margin-top:1px}
+.pill{
+  border-radius:var(--pill-r);
+  font-size:11px;font-weight:700;
+  padding:3px 10px;
+}
+.pill.green{background:var(--green-light);color:#166534}
+.pill.yellow{background:var(--warning-light);color:#92400E}
+.pill.red{background:var(--danger-light);color:#991B1B}
+.pill.blue{background:var(--blue-light);color:var(--blue)}
+.vehicle-meta{
+  display:flex;align-items:center;gap:14px;
+  margin-top:10px;font-size:12px;color:var(--muted);
+}
+.vehicle-meta-item{display:flex;align-items:center;gap:4px}
+.vehicle-meta-item svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fuel-low{color:var(--danger)!important}
+
+/* ── DRIVER SUMMARY ── */
+.duty-summary{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  padding:14px 16px 0;
+}
+.duty-card{
+  background:white;border-radius:12px;border:1px solid var(--border);
+  padding:12px;text-align:center;
+}
+.duty-card .duty-num{font-size:22px;font-weight:800;line-height:1}
+.duty-card .duty-label{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
+.duty-card.green .duty-num{color:var(--green)}
+.duty-card.yellow .duty-num{color:var(--warning)}
+.duty-card.red .duty-num{color:var(--danger)}
+
+/* ── DRIVER CARDS ── */
+.driver-list{padding:12px 16px}
+.driver-card{
+  background:white;border-radius:var(--card-r);
+  border:1px solid var(--border);
+  padding:13px 14px;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;
+}
+.driver-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--blue-light);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.driver-avatar svg{width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.driver-info{flex:1;min-width:0}
+.driver-name{font-size:14px;font-weight:700;color:var(--text)}
+.driver-truck{font-size:12px;color:var(--muted);margin-top:1px}
+.driver-meta{display:flex;gap:10px;margin-top:7px;flex-wrap:wrap}
+.driver-meta-item{
+  display:flex;align-items:center;gap:3px;
+  font-size:12px;color:var(--muted);
+}
+.driver-meta-item svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.driver-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.star{color:#FBBF24;font-size:12px}
+
+/* ── SERVICE / MAINTENANCE ── */
+.maint-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 16px 0}
+.maint-stat{
+  border-radius:12px;padding:12px;text-align:center;
+  border:1px solid transparent;
+}
+.maint-stat .mn{font-size:22px;font-weight:800}
+.maint-stat .ml{font-size:11px;margin-top:4px;font-weight:600}
+.maint-stat.red{background:var(--danger-light);border-color:var(--danger-border)}
+.maint-stat.red .mn{color:var(--danger)}
+.maint-stat.red .ml{color:var(--danger)}
+.maint-stat.yellow{background:var(--warning-light);border-color:var(--warning-border)}
+.maint-stat.yellow .mn{color:var(--warning)}
+.maint-stat.yellow .ml{color:var(--warning)}
+.maint-stat.green{background:var(--green-light);border-color:var(--green-border)}
+.maint-stat.green .mn{color:var(--green)}
+.maint-stat.green .ml{color:var(--green)}
+
+.ai-recommend{
+  margin:12px 16px 0;
+  background:var(--purple-light);
+  border:1px solid #DDD6FE;
+  border-radius:var(--card-r);
+  padding:14px;
+}
+.ai-recommend-title{font-size:13px;font-weight:700;color:var(--purple);display:flex;align-items:center;gap:6px}
+.ai-recommend p{font-size:12.5px;color:#4B5563;margin-top:6px;line-height:1.55}
+
+.service-list{padding:10px 16px}
+.service-card{
+  border-radius:14px;padding:13px 14px;
+  margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  border-left-width:4px;border-left-style:solid;
+}
+.service-card.overdue{background:var(--danger-light);border-left-color:var(--danger);border:1px solid var(--danger-border);border-left-width:4px}
+.service-card.upcoming{background:var(--warning-light);border-left-color:var(--warning);border:1px solid var(--warning-border);border-left-width:4px}
+.service-card.scheduled{background:var(--blue-light);border-left-color:var(--blue);border:1px solid var(--blue-border);border-left-width:4px}
+.service-name{font-size:14px;font-weight:700;color:var(--text)}
+.service-type{font-size:12px;color:var(--muted);margin-top:2px}
+.service-meta{font-size:11.5px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:5px}
+.service-meta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.service-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--pill-r);white-space:nowrap}
+.service-pill.red{background:var(--danger);color:white}
+.service-pill.yellow{background:var(--warning);color:white}
+.service-pill.blue{background:var(--blue);color:white}
+
+/* ── ANALYTICS ── */
+.analytics-section{padding:12px 16px 0}
+.month-row{margin-top:12px}
+.month-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.month-name{font-size:13px;font-weight:700;color:var(--text)}
+.month-rev{font-size:13px;font-weight:700;color:var(--text)}
+.bar-track{height:8px;background:#E9ECF0;border-radius:var(--pill-r);overflow:hidden;margin-bottom:4px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue) 0%,var(--blue-mid) 100%);border-radius:var(--pill-r);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.bar-meta{display:flex;justify-content:space-between}
+.bar-meta span{font-size:11px;color:var(--muted)}
+
+/* ── PROFILE ── */
+.profile-hero{
+  margin:14px 16px 0;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);
+  border-radius:var(--card-r);
+  padding:16px;
+  color:white;
+}
+.profile-avatar{
+  width:52px;height:52px;border-radius:14px;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.profile-avatar svg{width:26px;height:26px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.profile-row{display:flex;align-items:center;gap:12px}
+.profile-name{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.profile-role{font-size:13px;opacity:.85;margin-top:2px}
+.profile-org{font-size:12px;opacity:.75;margin-top:8px;display:flex;align-items:center;gap:5px}
+.profile-org svg{width:13px;height:13px;stroke:white;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+
+.info-card{margin:12px 16px 0}
+.info-row{display:flex;align-items:center;gap:12px;padding:10px 0}
+.info-row + .info-row{border-top:1px solid var(--border)}
+.info-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--blue-light);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.info-icon svg{width:16px;height:16px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.info-label{font-size:11px;color:var(--muted);font-weight:500}
+.info-value{font-size:13px;font-weight:600;color:var(--text);margin-top:2px}
+
+.fleet-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.fleet-stat-cell{background:var(--bg);border-radius:10px;padding:10px 12px;text-align:center}
+.fleet-stat-val{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.fleet-stat-lbl{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+
+/* ── SCREEN SYSTEM ── */
+.screen{display:none;animation:fadeSlide .25s ease both}
+.screen.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── LOGIN ── */
+.login-screen{
+  position:absolute;inset:0;
+  background:var(--blue);
+  display:flex;flex-direction:column;
+  z-index:100;
+  transition:opacity .35s ease,transform .35s ease;
+}
+.login-screen.hidden{opacity:0;transform:scale(.97);pointer-events:none}
+.login-top{
+  padding:52px 24px 44px;
+  text-align:center;color:white;flex-shrink:0;
+}
+.login-top .app-name{font-size:32px;font-weight:800;letter-spacing:-.04em}
+.login-top .app-sub{font-size:14px;opacity:.85;margin-top:8px;line-height:1.5}
+.login-card{
+  background:var(--bg);
+  border-radius:32px 32px 0 0;
+  flex:1;
+  padding:28px 22px;
+  overflow-y:auto;
+}
+.login-card h2{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.03em}
+.login-card .sub{font-size:13.5px;color:var(--muted);margin-top:4px}
+.field-label{font-size:13px;font-weight:600;color:var(--text-2);margin-top:18px;display:block}
+.field-wrap{position:relative;margin-top:6px}
+.field-input{
+  width:100%;padding:13px 14px;
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  background:white;
+  font-family:inherit;font-size:14px;color:var(--text);
+  outline:none;
+  transition:border-color .18s;
+}
+.field-input:focus{border-color:var(--blue)}
+.field-input::placeholder{color:var(--muted-2)}
+.field-icon{
+  position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  pointer-events:none;
+}
+.field-icon svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.field-input.has-icon{padding-left:40px}
+.toggle-pw{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;padding:4px;
+}
+.toggle-pw svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.check-row{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;
+}
+.check-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2);cursor:pointer}
+.check-label input[type=checkbox]{
+  width:16px;height:16px;border-radius:4px;
+  accent-color:var(--blue);
+}
+.forgot{font-size:13px;font-weight:600;color:var(--blue);text-decoration:none}
+.signin-btn{
+  display:block;width:100%;
+  margin-top:20px;padding:14px;
+  background:var(--blue);border:none;
+  border-radius:14px;color:white;
+  font-family:inherit;font-size:15px;font-weight:700;
+  cursor:pointer;letter-spacing:.01em;
+  transition:background .18s,transform .1s;
+}
+.signin-btn:hover{background:var(--blue-dark)}
+.signin-btn:active{transform:scale(.98)}
+.demo-box{
+  margin-top:18px;background:#E9EEF7;
+  border-radius:12px;padding:12px 14px;
+}
+.demo-box .demo-title{font-size:12px;font-weight:700;color:var(--text-2)}
+.demo-box .demo-detail{font-size:12px;color:var(--blue);margin-top:5px;line-height:1.6}
+
+/* ── OVERLAYS ── */
+.overlay-backdrop{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:50;
+  display:none;
+  cursor:pointer;
+}
+.overlay-backdrop.show{display:block;animation:fadeIn .22s ease}
+
+/* MENU DRAWER */
+.drawer{
+  position:absolute;top:0;left:0;bottom:0;
+  width:260px;background:white;
+  z-index:60;
+  transform:translateX(-100%);
+  transition:transform .28s cubic-bezier(.25,.8,.25,1);
+  display:flex;flex-direction:column;
+}
+.drawer.open{transform:none}
+.drawer-top{
+  background:var(--blue);
+  padding:22px 18px;
+  display:flex;align-items:center;gap:12px;color:white;
+}
+.drawer-avatar{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.drawer-avatar svg{width:22px;height:22px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.drawer-name{font-size:15px;font-weight:700}
+.drawer-role{font-size:12px;opacity:.8;margin-top:2px}
+.drawer-close{
+  margin-left:auto;
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,.15);border:none;
+  color:white;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.drawer-nav{flex:1;padding:12px 0;overflow-y:auto}
+.drawer-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 18px;
+  font-size:14px;font-weight:500;color:var(--text-2);
+  background:none;border:none;width:100%;text-align:left;
+  cursor:pointer;font-family:inherit;
+  transition:background .15s;
+}
+.drawer-item:hover{background:var(--bg)}
+.drawer-item-left{display:flex;align-items:center;gap:10px}
+.drawer-item-left svg{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.drawer-badge{
+  background:var(--blue);color:white;
+  font-size:11px;font-weight:700;
+  border-radius:var(--pill-r);
+  padding:1px 8px;
+}
+.drawer-footer{padding:14px 18px;font-size:11px;color:var(--muted);text-align:center;border-top:1px solid var(--border)}
+
+/* NOTIFICATION PANEL */
+.notif-panel{
+  position:absolute;top:0;right:0;
+  width:100%;background:white;
+  z-index:60;
+  transform:translateY(-8px);opacity:0;
+  transition:all .24s cubic-bezier(.25,.8,.25,1);
+  pointer-events:none;
+  border-bottom-left-radius:24px;
+  border-bottom-right-radius:24px;
+  box-shadow:0 8px 30px rgba(0,0,0,.12);
+}
+.notif-panel.open{transform:none;opacity:1;pointer-events:all}
+.notif-header{
+  background:var(--blue);
+  padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+  color:white;
+}
+.notif-title{font-size:16px;font-weight:700}
+.notif-count{font-size:12px;opacity:.8;margin-top:2px}
+.notif-close{
+  background:rgba(255,255,255,.15);border:none;
+  border-radius:8px;width:30px;height:30px;
+  color:white;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.notif-list{max-height:340px;overflow-y:auto}
+.notif-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  position:relative;
+}
+.notif-item:last-child{border-bottom:none}
+.notif-icon{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.notif-icon.red{background:var(--danger-light)}
+.notif-icon.yellow{background:var(--warning-light)}
+.notif-icon.green{background:var(--green-light)}
+.notif-icon.blue{background:var(--blue-light)}
+.notif-icon svg{width:16px;height:16px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.notif-icon.red svg{stroke:var(--danger)}
+.notif-icon.yellow svg{stroke:var(--warning)}
+.notif-icon.green svg{stroke:var(--green)}
+.notif-icon.blue svg{stroke:var(--blue)}
+.notif-text{flex:1}
+.notif-text strong{font-size:13px;font-weight:700;color:var(--text);display:block}
+.notif-text span{font-size:12px;color:var(--muted);display:block;margin-top:2px;line-height:1.4}
+.notif-text time{font-size:11px;color:var(--muted-2);display:block;margin-top:4px}
+.notif-unread-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--blue);
+  position:absolute;right:14px;top:14px;
+}
+.notif-footer{
+  padding:12px 16px;border-top:1px solid var(--border);
+}
+.mark-read-btn{
+  color:var(--blue);font-size:13px;font-weight:700;
+  background:none;border:none;cursor:pointer;font-family:inherit;
+  display:block;width:100%;text-align:center;padding:6px;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- ────────────── LOGIN SCREEN ────────────── -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-top">
+      <div class="app-name">FleetSense</div>
+      <div class="app-sub">AI-Assisted Fleet Management<br>for SME Trucking Operators</div>
+    </div>
+    <div class="login-card">
+      <h2>Welcome Back</h2>
+      <p class="sub">Sign in to manage your fleet</p>
+
+      <label class="field-label">Email Address</label>
+      <div class="field-wrap">
+        <span class="field-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg></span>
+        <input id="loginEmail" class="field-input has-icon" type="email" placeholder="roberto.cruz@cruztransport.ph" value="demo@fleetsense.ph"/>
+      </div>
+
+      <label class="field-label">Password</label>
+      <div class="field-wrap">
+        <span class="field-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+        <input id="loginPass" class="field-input has-icon" type="password" placeholder="Enter your password" value="demo123"/>
+        <button class="toggle-pw" id="togglePw" type="button">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+
+      <div class="check-row">
+        <label class="check-label"><input type="checkbox" id="remember" checked/> Remember me</label>
+        <a href="#" class="forgot">Forgot Password?</a>
+      </div>
+
+      <button class="signin-btn" id="signinBtn">Sign In</button>
+
+      <div class="demo-box">
+        <div class="demo-title">Demo Credentials:</div>
+        <div class="demo-detail">Email: demo@fleetsense.ph<br>Password: demo123</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ────────────── APP SHELL ────────────── -->
+  <div id="appShell" style="display:none;flex:1;flex-direction:column;height:100%">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>9:41</span>
+      <div class="status-right">
+        <svg viewBox="0 0 24 24"><path d="M1 6.5C5 2.5 19 2.5 23 6.5M5 10.5C8 7.5 16 7.5 19 10.5M9 14.5C10.5 13 13.5 13 15 14.5M12 18.5h.01"/></svg>
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/></svg>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-row">
+        <button class="header-icon-btn" id="menuBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="header-brand">
+          <div class="name">FleetSense</div>
+          <div class="sub">AI-Assisted Fleet Management</div>
+        </div>
+        <button class="header-icon-btn" id="bellBtn" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="badge" id="bellBadge">2</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div class="scroll-area" id="scrollArea">
+
+      <!-- DASHBOARD -->
+      <div class="screen active" id="s-dashboard">
+        <div class="page-head">
+          <div class="page-title">Dashboard</div>
+          <div class="page-sub">Fleet Overview – Tagum City</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">
+              <div class="stat-icon" style="background:#DCFCE7"><svg viewBox="0 0 24 24" stroke="#16A34A" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v4h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM18.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg></div>
+              Active Vehicles
+            </div>
+            <div class="stat-value"><span style="color:var(--green)">12</span><span style="font-size:14px;color:var(--muted);font-weight:600">/15</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">
+              <div class="stat-icon" style="background:#FEE2E2"><svg viewBox="0 0 24 24" stroke="#DC2626" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+              Alerts
+            </div>
+            <div class="stat-value" style="color:var(--danger)">3</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">
+              <div class="stat-icon" style="background:#DBEAFE"><svg viewBox="0 0 24 24" stroke="var(--blue)" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+              Avg Efficiency
+            </div>
+            <div class="stat-value">85%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">
+              <div class="stat-icon" style="background:#DCFCE7"><svg viewBox="0 0 24 24" stroke="#16A34A" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V12a9 9 0 0 1 18 0v10"/><path d="M12 6v6l4 2"/></svg></div>
+              Fuel Saved
+            </div>
+            <div class="stat-value" style="color:var(--green)">₱12,450</div>
+          </div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-box-title"><div class="ai-dot"></div> AI Insights</div>
+          <p>Route optimization could save ₱3,200 this week. Vehicle <strong>TRK-007</strong> needs maintenance soon.</p>
+          <a href="#" class="ai-link">View Details →</a>
+        </div>
+
+        <div class="section-title">Recent Alerts</div>
+        <div class="card" style="margin:0 16px">
+          <div class="alert-item">
+            <div class="alert-dot red"></div>
+            <div class="alert-text"><strong>TRK-007</strong><span>Low fuel detected</span></div>
+            <div class="alert-time">15 min ago</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot yellow"></div>
+            <div class="alert-text"><strong>TRK-012</strong><span>Route deviation</span></div>
+            <div class="alert-time">1 hr ago</div>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot yellow"></div>
+            <div class="alert-text"><strong>TRK-003</strong><span>Maintenance due</span></div>
+            <div class="alert-time">2 hrs ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLEET -->
+      <div class="screen" id="s-fleet">
+        <div class="page-head">
+          <div class="page-title">Fleet Tracking</div>
+          <div class="page-sub">Real-time vehicle monitoring</div>
+        </div>
+
+        <div class="map-box">
+          <div class="map-grid-lines"></div>
+          <div class="map-dot" style="left:28%;top:30%"></div>
+          <div class="map-dot" style="left:65%;top:22%"></div>
+          <div class="map-dot" style="left:72%;top:60%"></div>
+          <div class="map-pin">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--muted);stroke:none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          </div>
+          <div class="map-label">Map View · 12 vehicles tracked</div>
+        </div>
+
+        <div class="vehicle-list">
+          <div class="vehicle-card">
+            <div class="vehicle-top">
+              <div><div class="vehicle-name">TRK-001</div><div class="vehicle-driver">Juan Santos</div></div>
+              <div class="pill green">Active</div>
+            </div>
+            <div class="vehicle-meta">
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> 45 km/h</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/></svg> 78%</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Mabini St</div>
+            </div>
+          </div>
+
+          <div class="vehicle-card">
+            <div class="vehicle-top">
+              <div><div class="vehicle-name">TRK-003</div><div class="vehicle-driver">Maria Cruz</div></div>
+              <div class="pill green">Active</div>
+            </div>
+            <div class="vehicle-meta">
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> 52 km/h</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/></svg> 65%</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Apokon Rd</div>
+            </div>
+          </div>
+
+          <div class="vehicle-card" style="border-color:var(--warning-border)">
+            <div class="vehicle-top">
+              <div><div class="vehicle-name">TRK-007</div><div class="vehicle-driver">Pedro Reyes</div></div>
+              <div class="pill yellow">Warning</div>
+            </div>
+            <div class="vehicle-meta">
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> 60 km/h</div>
+              <div class="vehicle-meta-item fuel-low"><svg viewBox="0 0 24 24" stroke="var(--danger)"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/></svg> 15%</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Highway 3</div>
+            </div>
+          </div>
+
+          <div class="vehicle-card">
+            <div class="vehicle-top">
+              <div><div class="vehicle-name">TRK-009</div><div class="vehicle-driver">Ana Lopez</div></div>
+              <div class="pill green">Active</div>
+            </div>
+            <div class="vehicle-meta">
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> 38 km/h</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3"/></svg> 91%</div>
+              <div class="vehicle-meta-item"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Uyanguren St</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRIVERS -->
+      <div class="screen" id="s-drivers">
+        <div class="page-head">
+          <div class="page-title">Drivers</div>
+          <div class="page-sub">Manage driver assignments</div>
+        </div>
+
+        <div class="duty-summary">
+          <div class="duty-card green">
+            <div class="duty-num">4</div>
+            <div class="duty-label">On Duty</div>
+          </div>
+          <div class="duty-card yellow">
+            <div class="duty-num">1</div>
+            <div class="duty-label">Break</div>
+          </div>
+          <div class="duty-card red">
+            <div class="duty-num">1</div>
+            <div class="duty-label">Off Duty</div>
+          </div>
+        </div>
+
+        <div class="driver-list">
+          <div class="driver-card">
+            <div class="driver-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="driver-info">
+              <div class="driver-name">Juan Santos</div>
+              <div class="driver-truck">TRK-001</div>
+              <div class="driver-meta">
+                <div class="driver-meta-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 6.5h</div>
+                <div class="driver-meta-item" style="color:var(--green)">✓ 0 violations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICE -->
+      <div class="screen" id="s-service">
+        <div class="page-head">
+          <div class="page-title">Maintenance</div>
+          <div class="page-sub">Vehicle service schedule</div>
+        </div>
+
+        <div class="maint-summary">
+          <div class="maint-stat red"><div class="mn">1</div><div class="ml">Overdue</div></div>
+          <div class="maint-stat yellow"><div class="mn">3</div><div class="ml">Upcoming</div></div>
+          <div class="maint-stat green"><div class="mn">12</div><div class="ml">Completed</div></div>
+        </div>
+
+        <div class="ai-recommend">
+          <div class="ai-recommend-title">AI Recommendation</div>
+          <p>Schedule TRK-007 maintenance immediately. Predictive analysis suggests potential engine issues if delayed.</p>
+        </div>
+
+        <div class="service-list">
+          <div class="service-card overdue">
+            <div>
+              <div class="service-name">TRK-007</div>
+              <div class="service-type">Oil Change</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> May 16, 2026 · 45,230 km</div>
+            </div>
+            <div class="service-pill red">Overdue</div>
+          </div>
+          <div class="service-card upcoming">
+            <div>
+              <div class="service-name">TRK-003</div>
+              <div class="service-type">Brake Inspection</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> May 18, 2026 · 38,450 km</div>
+            </div>
+            <div class="service-pill yellow">Upcoming</div>
+          </div>
+          <div class="service-card scheduled">
+            <div>
+              <div class="service-name">TRK-012</div>
+              <div class="service-type">Tire Rotation</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> May 20, 2026</div>
+            </div>
+            <div class="service-pill blue">Scheduled</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="screen" id="s-analytics">
+        <div class="page-head">
+          <div class="page-title">Analytics & Reports</div>
+          <div class="page-sub">Performance insights</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">Revenue (May)</div><div class="stat-value">₱189,000</div><div style="color:var(--green);font-weight:700;margin-top:8px">+14.5%</div></div>
+          <div class="stat-card"><div class="stat-label">Fuel Cost</div><div class="stat-value">₱27,000</div><div style="color:var(--green);font-weight:700;margin-top:8px">-10%</div></div>
+          <div class="stat-card"><div class="stat-label">Avg Delivery Time</div><div class="stat-value">2.4 hrs</div><div style="color:var(--green);font-weight:700;margin-top:8px">-8%</div></div>
+          <div class="stat-card"><div class="stat-label">Total Distance</div><div class="stat-value">24,580 km</div><div style="color:var(--green);font-weight:700;margin-top:8px">+12%</div></div>
+        </div>
+
+        <div class="analytics-section">
+          <div class="month-row">
+            <div class="month-header"><span class="month-name">Jan</span><span class="month-rev">₱145k</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
+            <div class="bar-meta"><span>Efficiency: 82%</span><span>Fuel: ₱32.0k</span></div>
+          </div>
+          <div class="month-row">
+            <div class="month-header"><span class="month-name">Feb</span><span class="month-rev">₱158k</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+            <div class="bar-meta"><span>Efficiency: 85%</span><span>Fuel: ₱29.0k</span></div>
+          </div>
+          <div class="month-row">
+            <div class="month-header"><span class="month-name">Mar</span><span class="month-rev">₱172k</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:87%"></div></div>
+            <div class="bar-meta"><span>Efficiency: 87%</span><span>Fuel: ₱28.5k</span></div>
+          </div>
+          <div class="month-row">
+            <div class="month-header"><span class="month-name">Apr</span><span class="month-rev">₱165k</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:84%"></div></div>
+            <div class="bar-meta"><span>Efficiency: 84%</span><span>Fuel: ₱30.0k</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="screen" id="s-profile">
+        <div class="page-head">
+          <div class="page-title">Profile</div>
+          <div class="page-sub">Account settings</div>
+        </div>
+
+        <div class="profile-hero">
+          <div class="profile-row">
+            <div class="profile-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div>
+              <div class="profile-name">Roberto Cruz</div>
+              <div class="profile-role">Fleet Manager</div>
+            </div>
+          </div>
+          <div class="profile-org"><svg viewBox="0 0 24 24"><path d="M6 8h12M6 12h12M6 16h8"/></svg> Cruz Transport Services · Tagum City, Davao del Norte</div>
+        </div>
+
+        <div class="info-card card">
+          <div class="info-row">
+            <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 8h16"/></svg></div>
+            <div><div class="info-label">Email</div><div class="info-value">roberto.cruz@cruztransport.ph</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6z"/><path d="M12 4v16"/></svg></div>
+            <div><div class="info-label">Phone</div><div class="info-value">+63 912 345 6789</div></div>
+          </div>
+        </div>
+
+        <div class="info-card card">
+          <div class="fleet-stats-grid">
+            <div class="fleet-stat-cell"><div class="fleet-stat-val">15</div><div class="fleet-stat-lbl">Total Vehicles</div></div>
+            <div class="fleet-stat-cell"><div class="fleet-stat-val" style="color:var(--green)">6</div><div class="fleet-stat-lbl">Active Drivers</div></div>
+            <div class="fleet-stat-cell"><div class="fleet-stat-val" style="color:#7C3AED">24,580</div><div class="fleet-stat-lbl">Total KM This Month</div></div>
+            <div class="fleet-stat-cell"><div class="fleet-stat-val" style="color:#EA580C">87%</div><div class="fleet-stat-lbl">Avg Efficiency</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav" id="bottomNav">
+      <button class="nav-btn active" data-screen="dashboard"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zM13 21h8v-8h-8v8zM13 3v8h8V3h-8zM3 21h8v-6H3v6z"/></svg>Dashboard</button>
+      <button class="nav-btn" data-screen="fleet"><svg viewBox="0 0 24 24"><path d="M3 12h18v2H3zM5 8h14v2H5z"/></svg>Fleet</button>
+      <button class="nav-btn" data-screen="drivers"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1H6z"/></svg>Drivers</button>
+      <button class="nav-btn" data-screen="service"><svg viewBox="0 0 24 24"><path d="M19 7l-7 7-5-5"/></svg>Service</button>
+      <button class="nav-btn" data-screen="profile"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zM3 21a9 9 0 0118 0"/></svg>Profile</button>
+    </div>
+  </div>
+
+  <div class="overlay-backdrop" id="overlayBackdrop"></div>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-top">
+      <div class="drawer-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <div>
+        <div class="drawer-name">Roberto Cruz</div>
+        <div class="drawer-role">Fleet Manager</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" type="button">✕</button>
+    </div>
+    <div class="drawer-nav">
+      <button class="drawer-item" data-screen="dashboard"><span class="drawer-item-left">Dashboard</span></button>
+      <button class="drawer-item" data-screen="fleet"><span class="drawer-item-left">Fleet Management</span></button>
+      <button class="drawer-item" data-screen="drivers"><span class="drawer-item-left">Drivers<span class="drawer-badge">6</span></span></button>
+      <button class="drawer-item" data-screen="service"><span class="drawer-item-left">Maintenance<span class="drawer-badge">3</span></span></button>
+      <button class="drawer-item" data-screen="analytics"><span class="drawer-item-left">Analytics & Reports</span></button>
+      <button class="drawer-item" type="button"><span class="drawer-item-left">Documents</span></button>
+      <button class="drawer-item" type="button"><span class="drawer-item-left">Settings</span></button>
+      <button class="drawer-item" type="button"><span class="drawer-item-left">Help & Support</span></button>
+    </div>
+    <div class="drawer-footer">FleetSense v1.0 | © 2026 Cruz Transport Services</div>
+  </div>
+
+  <div class="notif-panel" id="notifPanel" aria-hidden="true">
+    <div class="notif-header">
+      <div>
+        <div class="notif-title">Notifications</div>
+        <div class="notif-count" id="notifCount">2 unread</div>
+      </div>
+      <button class="notif-close" id="notifClose" type="button">✕</button>
+    </div>
+    <div class="notif-list">
+      <div class="notif-item">
+        <div class="notif-icon red"><svg viewBox="0 0 24 24"><path d="M12 8v4"/><path d="M12 16h.01"/><path d="M4.93 4.93l14.14 14.14"/></svg></div>
+        <div class="notif-text"><strong>Low Fuel Alert</strong><span>TRK-007 fuel level below 20%</span><time>15 min ago</time></div>
+        <span class="notif-unread-dot"></span>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon yellow"><svg viewBox="0 0 24 24"><path d="M12 8v4"/><path d="M12 16h.01"/><path d="M4.93 4.93l14.14 14.14"/></svg></div>
+        <div class="notif-text"><strong>Route Deviation</strong><span>TRK-012 deviated from planned route</span><time>1 hr ago</time></div>
+        <span class="notif-unread-dot"></span>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon green"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="notif-text"><strong>Delivery Completed</strong><span>TRK-003 successfully completed delivery</span><time>2 hrs ago</time></div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon blue"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="notif-text"><strong>AI Insight</strong><span>Route optimization can save ₱3,200 this week</span><time>3 hrs ago</time></div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon yellow"><svg viewBox="0 0 24 24"><path d="M12 8v4"/><path d="M12 16h.01"/><path d="M4.93 4.93l14.14 14.14"/></svg></div>
+        <div class="notif-text"><strong>Maintenance Due</strong><span>TRK-007 oil change scheduled for tomorrow</span><time>5 hrs ago</time></div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon blue"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="notif-text"><strong>Driver Check-in</strong><span>Maria Cruz started shift at 8:00 AM</span><time>6 hrs ago</time></div>
+      </div>
+    </div>
+    <div class="notif-footer"><button class="mark-read-btn" id="markReadBtn" type="button">Mark all as read</button></div>
+  </div>
+</div>
+
+<script>
+  const screens = Array.from(document.querySelectorAll('.screen'));
+  const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
+  const signInButton = document.getElementById('signinBtn');
+  const loginScreen = document.getElementById('loginScreen');
+  const appShell = document.getElementById('appShell');
+  const togglePw = document.getElementById('togglePw');
+  const loginPass = document.getElementById('loginPass');
+  const menuBtn = document.getElementById('menuBtn');
+  const bellBtn = document.getElementById('bellBtn');
+  const drawer = document.getElementById('drawer');
+  const drawerClose = document.getElementById('drawerClose');
+  const drawerItems = Array.from(document.querySelectorAll('.drawer-item'));
+  const overlayBackdrop = document.getElementById('overlayBackdrop');
+  const notifPanel = document.getElementById('notifPanel');
+  const notifClose = document.getElementById('notifClose');
+  const markReadBtn = document.getElementById('markReadBtn');
+  const bellBadge = document.getElementById('bellBadge');
+  const notifCount = document.getElementById('notifCount');
+
+  let unreadCount = 2;
+  const currentUser = 'Roberto Cruz';
+
+  function updateBadge() {
+    if (!bellBadge) return;
+    if (unreadCount > 0) {
+      bellBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+      bellBadge.style.display = 'flex';
+      notifCount.textContent = `${unreadCount} unread`;
+    } else {
+      bellBadge.style.display = 'none';
+      notifCount.textContent = 'All caught up';
+      document.querySelectorAll('.notif-unread-dot').forEach(dot => dot.style.display = 'none');
+    }
+  }
+
+  function closeOverlays() {
+    drawer.classList.remove('open');
+    notifPanel.classList.remove('open');
+    overlayBackdrop.classList.remove('show');
+  }
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    notifPanel.classList.remove('open');
+    overlayBackdrop.classList.add('show');
+  }
+
+  function openNotif() {
+    notifPanel.classList.add('open');
+    drawer.classList.remove('open');
+    overlayBackdrop.classList.add('show');
+  }
+
+  function setActiveScreen(screenId) {
+    screens.forEach(screen => screen.classList.toggle('active', screen.id === `s-${screenId}`));
+    navButtons.forEach(btn => {
+      const active = btn.dataset.screen === screenId;
+      btn.classList.toggle('active', active);
+    });
+    closeOverlays();
+  }
+
+  if (togglePw) {
+    togglePw.addEventListener('click', () => {
+      loginPass.type = loginPass.type === 'password' ? 'text' : 'password';
+    });
+  }
+
+  if (signInButton) {
+    signInButton.addEventListener('click', () => {
+      loginScreen.classList.add('hidden');
+      appShell.style.display = 'flex';
+      setActiveScreen('dashboard');
+    });
+  }
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => setActiveScreen(btn.dataset.screen));
+  });
+
+  menuBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeOverlays);
+  drawerItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const screen = item.dataset.screen;
+      if (screen) setActiveScreen(screen);
+      closeOverlays();
+    });
+  });
+
+  bellBtn.addEventListener('click', () => {
+    if (notifPanel.classList.contains('open')) {
+      closeOverlays();
+    } else {
+      openNotif();
+    }
+  });
+
+  notifClose.addEventListener('click', closeOverlays);
+  overlayBackdrop.addEventListener('click', closeOverlays);
+
+  markReadBtn.addEventListener('click', () => {
+    unreadCount = 0;
+    updateBadge();
+  });
+
+  document.querySelectorAll('.forgot').forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      alert('Forgot password flow is not connected in this demo.');
+    });
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeOverlays();
+  });
+
+  updateBadge();
+</script>
+</body>
+</html>
+            
