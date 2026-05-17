@@ -31,6 +31,10 @@
   --border:#E5E7EB;
   --bg:#F3F4F6;
   --white:#FFFFFF;
+  --surface:#D9E8EF;
+  --surface-soft:#EFF6FF;
+  --track-bg:#E9ECF0;
+  --dot-border:#FFFFFF;
   --card-r:16px;
   --pill-r:9999px;
 }
@@ -119,7 +123,7 @@ body{
 /* ── BOTTOM NAV ── */
 .bottom-nav{
   position:absolute;bottom:0;left:0;right:0;
-  background:white;
+  background:var(--white);
   border-top:1px solid var(--border);
   display:grid;grid-template-columns:repeat(5,1fr);
   padding:8px 4px 20px;
@@ -144,7 +148,7 @@ body{
 
 /* ── CARDS ── */
 .card{
-  background:white;
+  background:var(--white);
   border-radius:var(--card-r);
   border:1px solid var(--border);
   overflow:hidden;
@@ -159,7 +163,7 @@ body{
   padding:14px 16px;
 }
 .stat-card{
-  background:white;border-radius:var(--card-r);
+  background:var(--white);border-radius:var(--card-r);
   border:1px solid var(--border);
   padding:14px;
 }
@@ -171,7 +175,7 @@ body{
 /* ── AI BOX ── */
 .ai-box{
   margin:0 16px;
-  background:#EFF6FF;
+  background:var(--surface-soft);
   border:1px solid var(--blue-border);
   border-radius:var(--card-r);
   padding:14px;
@@ -187,7 +191,7 @@ body{
   display:flex;align-items:center;gap:10px;
   padding:11px 16px;
   border-bottom:1px solid var(--border);
-  background:white;
+  background:var(--white);
 }
 .alert-item:last-child{border-bottom:none}
 .alert-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -203,19 +207,19 @@ body{
 /* ── MAP PLACEHOLDER ── */
 .map-box{
   margin:14px 16px 0;
-  background:#D9E8EF;
+  background:var(--surface);
   border-radius:var(--card-r);
   height:140px;
   position:relative;
   overflow:hidden;
-  border:1px solid #BFD4DE;
+  border:1px solid var(--border);
 }
 .map-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:28px 28px}
-.map-dot{width:10px;height:10px;background:#16A34A;border-radius:50%;position:absolute;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.map-dot{width:10px;height:10px;background:#16A34A;border-radius:50%;position:absolute;border:2px solid var(--dot-border);box-shadow:0 1px 4px rgba(0,0,0,.18)}
 .map-pin{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
   width:36px;height:36px;
-  background:white;border-radius:50%;
+  background:var(--white);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 3px 10px rgba(0,0,0,.18);
 }
@@ -228,7 +232,7 @@ body{
 /* ── VEHICLE CARDS ── */
 .vehicle-list{padding:10px 16px}
 .vehicle-card{
-  background:white;border-radius:var(--card-r);
+  background:var(--white);border-radius:var(--card-r);
   border:1px solid var(--border);
   padding:12px 14px;
   margin-bottom:10px;
@@ -259,7 +263,7 @@ body{
   padding:14px 16px 0;
 }
 .duty-card{
-  background:white;border-radius:12px;border:1px solid var(--border);
+  background:var(--white);border-radius:12px;border:1px solid var(--border);
   padding:12px;text-align:center;
 }
 .duty-card .duty-num{font-size:22px;font-weight:800;line-height:1}
@@ -271,7 +275,7 @@ body{
 /* ── DRIVER CARDS ── */
 .driver-list{padding:12px 16px}
 .driver-card{
-  background:white;border-radius:var(--card-r);
+  background:var(--white);border-radius:var(--card-r);
   border:1px solid var(--border);
   padding:13px 14px;
   margin-bottom:10px;
@@ -317,7 +321,7 @@ body{
 .ai-recommend{
   margin:12px 16px 0;
   background:var(--purple-light);
-  border:1px solid #DDD6FE;
+  border:1px solid var(--border);
   border-radius:var(--card-r);
   padding:14px;
 }
@@ -325,7 +329,7 @@ body{
 .ai-recommend p{font-size:12.5px;color:#4B5563;margin-top:6px;line-height:1.55}
 
 .service-list{padding:10px 16px}
-.service-card{
+.service-card{  
   border-radius:14px;padding:13px 14px;
   margin-bottom:10px;
   display:flex;justify-content:space-between;align-items:flex-start;
@@ -349,7 +353,7 @@ body{
 .month-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
 .month-name{font-size:13px;font-weight:700;color:var(--text)}
 .month-rev{font-size:13px;font-weight:700;color:var(--text)}
-.bar-track{height:8px;background:#E9ECF0;border-radius:var(--pill-r);overflow:hidden;margin-bottom:4px}
+.bar-track{height:8px;background:var(--track-bg);border-radius:var(--pill-r);overflow:hidden;margin-bottom:4px}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--blue) 0%,var(--blue-mid) 100%);border-radius:var(--pill-r);transition:width .6s cubic-bezier(.4,0,.2,1)}
 .bar-meta{display:flex;justify-content:space-between}
 .bar-meta span{font-size:11px;color:var(--muted)}
@@ -404,6 +408,17 @@ body{
   display:flex;flex-direction:column;
   z-index:100;
   transition:opacity .35s ease,transform .35s ease;
+  --bg:#F3F4F6;
+  --text:#111827;
+  --text-2:#374151;
+  --muted:#6B7280;
+  --muted-2:#9CA3AF;
+  --border:#E5E7EB;
+  --white:#FFFFFF;
+  --blue:#2563EB;
+  --blue-dark:#1E40AF;
+  --blue-light:#EFF6FF;
+  --blue-border:#BFDBFE;
 }
 .login-screen.hidden{opacity:0;transform:scale(.97);pointer-events:none}
 .login-top{
@@ -427,7 +442,7 @@ body{
   width:100%;padding:13px 14px;
   border:1.5px solid var(--border);
   border-radius:12px;
-  background:white;
+  background:var(--white);
   font-family:inherit;font-size:14px;color:var(--text);
   outline:none;
   transition:border-color .18s;
@@ -467,7 +482,7 @@ body{
 .signin-btn:hover{background:var(--blue-dark)}
 .signin-btn:active{transform:scale(.98)}
 .demo-box{
-  margin-top:18px;background:#E9EEF7;
+  margin-top:18px;background:var(--surface-soft);
   border-radius:12px;padding:12px 14px;
 }
 .demo-box .demo-title{font-size:12px;font-weight:700;color:var(--text-2)}
@@ -486,7 +501,7 @@ body{
 /* MENU DRAWER */
 .drawer{
   position:absolute;top:0;left:0;bottom:0;
-  width:260px;background:white;
+  width:260px;background:var(--white);
   z-index:60;
   transform:translateX(-100%);
   transition:transform .28s cubic-bezier(.25,.8,.25,1);
@@ -536,7 +551,7 @@ body{
 /* NOTIFICATION PANEL */
 .notif-panel{
   position:absolute;top:0;right:0;
-  width:100%;background:white;
+  width:100%;background:var(--white);
   z-index:60;
   transform:translateY(-8px);opacity:0;
   transition:all .24s cubic-bezier(.25,.8,.25,1);
@@ -649,7 +664,7 @@ body{
 
     <!-- Status Bar -->
     <div class="status-bar">
-      <span>9:41</span>
+      <span id="timeAndGps">9:41 <span id="gpsStatus" style="font-size:11px;margin-left:8px;color:var(--muted)">GPS off</span></span>
       <div class="status-right">
         <svg viewBox="0 0 24 24"><path d="M1 6.5C5 2.5 19 2.5 23 6.5M5 10.5C8 7.5 16 7.5 19 10.5M9 14.5C10.5 13 13.5 13 15 14.5M12 18.5h.01"/></svg>
         <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -969,6 +984,211 @@ body{
           </div>
         </div>
       </div>
+
+      <!-- SETTINGS -->
+      <div class="screen" id="s-settings">
+        <div class="page-head">
+          <div class="page-title">Settings</div>
+          <div class="page-sub">App features and toggles</div>
+        </div>
+
+        <div class="card" style="margin:12px 16px">
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <div>
+                  <div style="font-weight:700">Dark Mode</div>
+                  <div style="font-size:12px;color:var(--muted)">Toggle dark theme for the prototype</div>
+                </div>
+                <input type="checkbox" id="toggleDark" />
+              </label>
+
+              <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <div>
+                  <div style="font-weight:700">GPS (Simulated)</div>
+                  <div style="font-size:12px;color:var(--muted)">Enable/disable simulated GPS features</div>
+                </div>
+                <input type="checkbox" id="toggleGPS" />
+              </label>
+
+              <label style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <div>
+                  <div style="font-weight:700">Notifications</div>
+                  <div style="font-size:12px;color:var(--muted)">Show notification badges and panel</div>
+                </div>
+                <input type="checkbox" id="toggleNotif" checked />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- DOCUMENTS / ELIGIBILITY -->
+      <div class="screen" id="s-documents">
+        <div class="page-head">
+          <div class="page-title">Documents & Eligibility</div>
+          <div class="page-sub">Submission status and company eligibility</div>
+        </div>
+
+        <div class="card" style="margin:12px 16px">
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <div>
+                <div style="font-weight:800">Eligibility</div>
+                <div style="color:var(--muted);margin-top:6px">The user is eligible to use the app within the company <strong>Cruz Transport Services</strong>.</div>
+              </div>
+              <div class="pill green">Eligible</div>
+            </div>
+            <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+              <div><strong>Plate:</strong> TRK-007 · <strong>Driver License:</strong> D-1234567</div>
+              <div style="margin-top:6px"><strong>Employee ID:</strong> EMP-045 · <strong>Employer:</strong> Cruz Transport Services</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">Uploaded Documents</div>
+        <div class="card" style="margin:0 16px 80px">
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div class="card" style="padding:10px">
+                <div style="font-weight:700">Plate Registration</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:6px">TRK-007 registration document</div>
+                <div style="margin-top:10px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+                  <div style="font-size:12px;color:var(--muted)"><span class="pill green" style="padding:4px 8px">Verified</span></div>
+                  <div><button class="signin-btn" style="padding:8px 10px;font-size:12px">View</button></div>
+                </div>
+              </div>
+
+              <div class="card" style="padding:10px">
+                <div style="font-weight:700">Driver License</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:6px">License D-1234567</div>
+                <div style="margin-top:10px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+                  <div style="font-size:12px;color:var(--muted)"><span class="pill blue" style="padding:4px 8px">Pending</span></div>
+                  <div><button class="signin-btn" style="padding:8px 10px;font-size:12px">Upload</button></div>
+                </div>
+              </div>
+
+              <div class="card" style="padding:10px">
+                <div style="font-weight:700">Employee ID</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:6px">EMP-045</div>
+                <div style="margin-top:10px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+                  <div style="font-size:12px;color:var(--muted)"><span class="pill green" style="padding:4px 8px">Verified</span></div>
+                  <div><button class="signin-btn" style="padding:8px 10px;font-size:12px">View</button></div>
+                </div>
+              </div>
+
+              <div class="card" style="padding:10px">
+                <div style="font-weight:700">Employer Agreement</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:6px">Signed employer document</div>
+                <div style="margin-top:10px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+                  <div style="font-size:12px;color:var(--muted)"><span class="pill green" style="padding:4px 8px">Verified</span></div>
+                  <div><button class="signin-btn" style="padding:8px 10px;font-size:12px">View</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HELP & SUPPORT -->
+      <div class="screen" id="s-help">
+        <div class="page-head">
+          <div class="page-title">Help & Support</div>
+          <div class="page-sub">Ask questions, send feedback, or reach out directly</div>
+        </div>
+
+        <div class="card" style="margin:12px 16px">
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:42px;height:42px;border-radius:14px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 8h16"/><path d="M8 12h8"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:700">Send Feedback</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">Share product ideas or report an issue.</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5">Example: "I would love a live route status update, and the document upload flow could use clearer labels." Use the form or email below to submit your feedback.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:0 16px 10px">
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:42px;height:42px;border-radius:14px;background:var(--purple-light);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"/><path d="M3 12h18"/><path d="M3 17h18"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:700">FAQs</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">Find answers for common product questions.</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5">Example: "How do I upload driver documents?" "Can I turn off notifications for a vehicle?" "How is GPS data used?"</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:0 16px 10px">
+          <div class="card-body">
+            <div style="display:grid;gap:12px">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="width:34px;height:34px;border-radius:12px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+                </div>
+                <div>
+                  <div class="info-label">Support Email</div>
+                  <div class="info-value">help@fleetsense.ph</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="width:34px;height:34px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
+                </div>
+                <div>
+                  <div class="info-label">Phone</div>
+                  <div class="info-value">+63 912 345 6789</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="width:34px;height:34px;border-radius:12px;background:var(--warning-light);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M6 10h12"/><path d="M6 14h8"/></svg>
+                </div>
+                <div>
+                  <div class="info-label">Company Address</div>
+                  <div class="info-value">Cruz Transport Services, Tagum City, Davao del Norte</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:0 16px 80px">
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:42px;height:42px;border-radius:14px;background:#FCE7F3;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#BE185D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:700">Social Media</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:4px">Follow us for updates and product news.</div>
+              </div>
+            </div>
+            <div style="display:grid;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:24px;height:24px;border-radius:6px;background:#1877F2;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;">f</span>
+                <span style="font-size:12px;color:var(--text)">Facebook /fleetsense</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:24px;height:24px;border-radius:6px;background:#0A66C2;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;">in</span>
+                <span style="font-size:12px;color:var(--text)">LinkedIn /company/fleetsense</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="width:24px;height:24px;border-radius:6px;background:#E4405F;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;">✦</span>
+                <span style="font-size:12px;color:var(--text)">Instagram @fleetsense</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="bottom-nav" id="bottomNav">
@@ -997,9 +1217,10 @@ body{
       <button class="drawer-item" data-screen="drivers"><span class="drawer-item-left">Drivers<span class="drawer-badge">6</span></span></button>
       <button class="drawer-item" data-screen="service"><span class="drawer-item-left">Maintenance<span class="drawer-badge">3</span></span></button>
       <button class="drawer-item" data-screen="analytics"><span class="drawer-item-left">Analytics & Reports</span></button>
-      <button class="drawer-item" type="button"><span class="drawer-item-left">Documents</span></button>
-      <button class="drawer-item" type="button"><span class="drawer-item-left">Settings</span></button>
-      <button class="drawer-item" type="button"><span class="drawer-item-left">Help & Support</span></button>
+      <button class="drawer-item" data-screen="documents"><span class="drawer-item-left">Documents / Eligibility</span></button>
+      <button class="drawer-item" data-screen="settings"><span class="drawer-item-left">Settings</span></button>
+      <button class="drawer-item" data-screen="help"><span class="drawer-item-left">Help & Support</span></button>
+      <button class="drawer-item" id="logoutBtn" type="button"><span class="drawer-item-left">Logout</span></button>
     </div>
     <div class="drawer-footer">FleetSense v1.0 | © 2026 Cruz Transport Services</div>
   </div>
@@ -1057,12 +1278,19 @@ body{
   const drawer = document.getElementById('drawer');
   const drawerClose = document.getElementById('drawerClose');
   const drawerItems = Array.from(document.querySelectorAll('.drawer-item'));
+  const logoutBtn = document.getElementById('logoutBtn');
   const overlayBackdrop = document.getElementById('overlayBackdrop');
   const notifPanel = document.getElementById('notifPanel');
   const notifClose = document.getElementById('notifClose');
   const markReadBtn = document.getElementById('markReadBtn');
   const bellBadge = document.getElementById('bellBadge');
   const notifCount = document.getElementById('notifCount');
+  const toggleDark = document.getElementById('toggleDark');
+  const toggleGPS = document.getElementById('toggleGPS');
+  const toggleNotif = document.getElementById('toggleNotif');
+  const gpsStatusEl = document.getElementById('gpsStatus');
+  const root = document.documentElement;
+  const bodyEl = document.body;
 
   let unreadCount = 2;
   const currentUser = 'Roberto Cruz';
@@ -1134,6 +1362,107 @@ body{
       closeOverlays();
     });
   });
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      const loginEmail = document.getElementById('loginEmail');
+      loginScreen.classList.remove('hidden');
+      appShell.style.display = 'none';
+      if (loginEmail) loginEmail.value = '';
+      if (loginPass) loginPass.value = '';
+      unreadCount = 2;
+      updateBadge();
+      closeOverlays();
+    });
+  }
+
+  // --- Settings: Dark mode, GPS (simulated), Notifications ---
+  const defaultVars = {
+    '--bg': getComputedStyle(root).getPropertyValue('--bg'),
+    '--text': getComputedStyle(root).getPropertyValue('--text'),
+    '--text-2': getComputedStyle(root).getPropertyValue('--text-2'),
+    '--muted': getComputedStyle(root).getPropertyValue('--muted'),
+    '--muted-2': getComputedStyle(root).getPropertyValue('--muted-2'),
+    '--border': getComputedStyle(root).getPropertyValue('--border'),
+    '--white': getComputedStyle(root).getPropertyValue('--white'),
+    '--surface': getComputedStyle(root).getPropertyValue('--surface'),
+    '--surface-soft': getComputedStyle(root).getPropertyValue('--surface-soft'),
+    '--track-bg': getComputedStyle(root).getPropertyValue('--track-bg'),
+    '--dot-border': getComputedStyle(root).getPropertyValue('--dot-border'),
+    '--blue': getComputedStyle(root).getPropertyValue('--blue'),
+    '--blue-dark': getComputedStyle(root).getPropertyValue('--blue-dark'),
+    '--blue-mid': getComputedStyle(root).getPropertyValue('--blue-mid'),
+    '--blue-light': getComputedStyle(root).getPropertyValue('--blue-light'),
+    '--blue-border': getComputedStyle(root).getPropertyValue('--blue-border'),
+    '--green-light': getComputedStyle(root).getPropertyValue('--green-light'),
+    '--green-border': getComputedStyle(root).getPropertyValue('--green-border'),
+    '--warning-light': getComputedStyle(root).getPropertyValue('--warning-light'),
+    '--warning-border': getComputedStyle(root).getPropertyValue('--warning-border'),
+    '--danger-light': getComputedStyle(root).getPropertyValue('--danger-light'),
+    '--danger-border': getComputedStyle(root).getPropertyValue('--danger-border'),
+    '--purple-light': getComputedStyle(root).getPropertyValue('--purple-light')
+  };
+  const darkVars = {
+    '--bg': '#0B1220',
+    '--text': '#E6EEF8',
+    '--text-2': '#CBD5E1',
+    '--muted': '#94A3B8',
+    '--muted-2': '#64748B',
+    '--border': '#1F2937',
+    '--white': '#111827',
+    '--surface': '#111827',
+    '--surface-soft': '#1E293B',
+    '--track-bg': '#1E293B',
+    '--dot-border': '#334155',
+    '--blue': '#60A5FA',
+    '--blue-dark': '#1D4ED8',
+    '--blue-mid': '#3B82F6',
+    '--blue-light': '#1E3A8A',
+    '--blue-border': '#2563EB',
+    '--green-light': '#064E3B',
+    '--green-border': '#0F766E',
+    '--warning-light': '#78350F',
+    '--warning-border': '#B45309',
+    '--danger-light': '#7F1D1D',
+    '--danger-border': '#B91C1C',
+    '--purple-light': '#4338CA'
+  };
+
+  function applyDark(on) {
+    if (on) {
+      Object.keys(darkVars).forEach(k => root.style.setProperty(k, darkVars[k]));
+      bodyEl.classList.add('dark');
+    } else {
+      Object.keys(defaultVars).forEach(k => root.style.setProperty(k, defaultVars[k]));
+      bodyEl.classList.remove('dark');
+    }
+  }
+
+  let settings = { dark: false, gps: false, notif: true };
+  function saveSettings() { localStorage.setItem('fs_settings', JSON.stringify(settings)); }
+  function loadSettings() {
+    try { const s = JSON.parse(localStorage.getItem('fs_settings')); if (s) settings = Object.assign(settings, s); } catch(e){ }
+  }
+
+  function updateGpsUI() {
+    if (!gpsStatusEl) return;
+    gpsStatusEl.textContent = settings.gps ? 'GPS on' : 'GPS off';
+    // show/hide simulated map dots
+    document.querySelectorAll('.map-dot').forEach(d => d.style.display = settings.gps ? 'block' : 'none');
+  }
+
+  function applyNotifUI() {
+    if (!bellBadge) return;
+    bellBadge.style.display = settings.notif ? 'flex' : 'none';
+  }
+
+  // initialize settings controls from storage
+  loadSettings();
+  if (toggleDark) { toggleDark.checked = !!settings.dark; applyDark(settings.dark); toggleDark.addEventListener('change', () => { settings.dark = toggleDark.checked; applyDark(settings.dark); saveSettings(); }); }
+  if (toggleGPS) { toggleGPS.checked = !!settings.gps; updateGpsUI(); toggleGPS.addEventListener('change', () => { settings.gps = toggleGPS.checked; updateGpsUI(); saveSettings(); }); }
+  if (toggleNotif) { toggleNotif.checked = !!settings.notif; applyNotifUI(); toggleNotif.addEventListener('change', () => { settings.notif = toggleNotif.checked; applyNotifUI(); saveSettings(); }); }
+
+  applyNotifUI();
 
   bellBtn.addEventListener('click', () => {
     if (notifPanel.classList.contains('open')) {
