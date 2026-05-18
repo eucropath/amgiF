@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>FleetSense — AI Fleet Management</title>
-<link rel="icon" type="image/jpeg" href="Images/2.jpg" />
+<link rel="icon" type="image/svg+xml" href="fleetsense_logo_v2.svg" />
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -89,6 +89,14 @@ body{
 }
 .header-row{display:flex;align-items:center;justify-content:space-between}
 .header-brand{text-align:center}
+.header-brand .mini-logo{
+  width:26px;height:26px;
+  display:block;
+  margin:0 auto 5px;
+  padding:3px;
+  border-radius:8px;
+  background:rgba(255,255,255,.14);
+}
 .header-brand .name{font-weight:800;font-size:18px;letter-spacing:-.03em}
 .header-brand .sub{font-size:11px;opacity:.85;margin-top:1px}
 .header-icon-btn{
@@ -425,6 +433,13 @@ body{
   padding:52px 24px 44px;
   text-align:center;color:white;flex-shrink:0;
 }
+.login-logo{
+  width:220px;
+  max-width:82%;
+  display:block;
+  margin:0 auto 14px;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.18));
+}
 .login-top .app-name{font-size:32px;font-weight:800;letter-spacing:-.04em}
 .login-top .app-sub{font-size:14px;opacity:.85;margin-top:8px;line-height:1.5}
 .login-card{
@@ -487,6 +502,51 @@ body{
 }
 .demo-box .demo-title{font-size:12px;font-weight:700;color:var(--text-2)}
 .demo-box .demo-detail{font-size:12px;color:var(--blue);margin-top:5px;line-height:1.6}
+
+.role-picker{margin-top:16px}
+.role-picker .role-label{font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:8px}
+.role-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.role-btn{
+  border:1.5px solid var(--border);
+  background:var(--white);
+  border-radius:12px;
+  padding:10px 8px;
+  font-family:inherit;
+  cursor:pointer;
+  text-align:left;
+}
+.role-btn strong{display:block;font-size:13px;color:var(--text)}
+.role-btn span{display:block;font-size:11px;color:var(--muted);margin-top:3px;line-height:1.3}
+.role-btn.active{border-color:var(--blue);background:var(--blue-light)}
+
+.role-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:8px;
+  font-size:11px;font-weight:700;
+  color:var(--blue);
+  background:var(--blue-light);
+  border:1px solid var(--blue-border);
+  border-radius:var(--pill-r);
+  padding:3px 9px;
+}
+
+/* DRIVER FLOW */
+.trip-focus{margin:12px 16px 0}
+.trip-card{background:var(--white);border:1px solid var(--border);border-radius:var(--card-r);padding:14px}
+.trip-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--pill-r);display:inline-block}
+.trip-pill.blue{background:var(--blue-light);color:var(--blue)}
+.trip-pill.green{background:var(--green-light);color:#166534}
+.trip-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.trip-label{font-size:11px;color:var(--muted);font-weight:600}
+.trip-value{font-size:13px;color:var(--text);font-weight:700;margin-top:2px}
+.kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 16px 0}
+.kpi-cell{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}
+.kpi-cell strong{display:block;font-size:18px;color:var(--text)}
+.kpi-cell span{font-size:11px;color:var(--muted);font-weight:600}
+.task-list{padding:10px 16px}
+.task-item{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:12px 13px;margin-bottom:10px}
+.task-item-title{font-size:13px;font-weight:700;color:var(--text)}
+.task-item-sub{font-size:12px;color:var(--muted);margin-top:4px}
 
 /* ── OVERLAYS ── */
 .overlay-backdrop{
@@ -623,6 +683,7 @@ body{
   <!-- ────────────── LOGIN SCREEN ────────────── -->
   <div class="login-screen" id="loginScreen">
     <div class="login-top">
+      <img class="login-logo" src="fleetsense_logo_v2.svg" alt="FleetSense logo"/>
       <div class="app-name">FleetSense</div>
       <div class="app-sub">AI-Assisted Fleet Management<br>for SME Trucking Operators</div>
     </div>
@@ -650,11 +711,25 @@ body{
         <a href="#" class="forgot">Forgot Password?</a>
       </div>
 
+      <div class="role-picker">
+        <div class="role-label">Sign in as</div>
+        <div class="role-options">
+          <button class="role-btn active" id="ownerRoleBtn" type="button" data-role="owner">
+            <strong>Owner</strong>
+            <span>Full fleet administration</span>
+          </button>
+          <button class="role-btn" id="driverRoleBtn" type="button" data-role="driver">
+            <strong>Driver</strong>
+            <span>Trip execution workspace</span>
+          </button>
+        </div>
+      </div>
+
       <button class="signin-btn" id="signinBtn">Sign In</button>
 
       <div class="demo-box">
         <div class="demo-title">Demo Credentials:</div>
-        <div class="demo-detail">Email: demo@fleetsense.ph<br>Password: demo123</div>
+        <div class="demo-detail">Owner: demo@fleetsense.ph<br>Driver: driver@fleetsense.ph<br>Password: demo123</div>
       </div>
     </div>
   </div>
@@ -679,8 +754,10 @@ body{
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <div class="header-brand">
+          <img class="mini-logo" src="fleetsense_logo_v2.svg" alt="FleetSense"/>
           <div class="name">FleetSense</div>
-          <div class="sub">AI-Assisted Fleet Management</div>
+          <div class="sub" id="headerRoleSub">AI-Assisted Fleet Management</div>
+          <div class="role-chip" id="roleChip">Owner Mode</div>
         </div>
         <button class="header-icon-btn" id="bellBtn" style="position:relative">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -946,6 +1023,149 @@ body{
         </div>
       </div>
 
+      <!-- DRIVER: MY TRIP -->
+      <div class="screen" id="s-mytrip">
+        <div class="page-head">
+          <div class="page-title">My Assigned Trip</div>
+          <div class="page-sub">Current dispatch and delivery progress</div>
+        </div>
+
+        <div class="trip-focus">
+          <div class="trip-card">
+            <span class="trip-pill blue">In Progress</span>
+            <div class="trip-row">
+              <div>
+                <div class="trip-label">Truck</div>
+                <div class="trip-value">TRK-007</div>
+              </div>
+              <div>
+                <div class="trip-label">Route</div>
+                <div class="trip-value">Tagum to Panabo</div>
+              </div>
+            </div>
+            <div class="trip-row">
+              <div>
+                <div class="trip-label">Departure</div>
+                <div class="trip-value">08:30 AM</div>
+              </div>
+              <div>
+                <div class="trip-label">ETA</div>
+                <div class="trip-value">11:05 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">Today Checklist</div>
+        <div class="task-list">
+          <div class="task-item"><div class="task-item-title">Pre-trip inspection complete</div><div class="task-item-sub">Uploaded tire and brake checks at 8:12 AM</div></div>
+          <div class="task-item"><div class="task-item-title">Cargo secure confirmation</div><div class="task-item-sub">Container #CARGO-441 is sealed and documented</div></div>
+          <div class="task-item"><div class="task-item-title">Destination contact</div><div class="task-item-sub">Receiver informed of expected arrival window</div></div>
+        </div>
+      </div>
+
+      <!-- DRIVER: STATUS -->
+      <div class="screen" id="s-tripstatus">
+        <div class="page-head">
+          <div class="page-title">Trip Status Update</div>
+          <div class="page-sub">Mark trip stage and sync owner visibility</div>
+        </div>
+
+        <div class="kpi-strip">
+          <div class="kpi-cell"><strong>1</strong><span>Assigned</span></div>
+          <div class="kpi-cell"><strong>1</strong><span>Active</span></div>
+          <div class="kpi-cell"><strong>8</strong><span>Completed</span></div>
+        </div>
+
+        <div class="service-list">
+          <div class="service-card scheduled">
+            <div>
+              <div class="service-name">Started Trip</div>
+              <div class="service-type">Departure checkpoint logged</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> 08:30 AM</div>
+            </div>
+            <div class="service-pill blue">Done</div>
+          </div>
+          <div class="service-card upcoming">
+            <div>
+              <div class="service-name">Mid-route check</div>
+              <div class="service-type">Update location + cargo status</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> Due in 30 mins</div>
+            </div>
+            <div class="service-pill yellow">Pending</div>
+          </div>
+          <div class="service-card overdue">
+            <div>
+              <div class="service-name">Delivery Confirmation</div>
+              <div class="service-type">Submit recipient signature photo</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> After arrival</div>
+            </div>
+            <div class="service-pill red">Required</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRIVER: FUEL -->
+      <div class="screen" id="s-fuellog">
+        <div class="page-head">
+          <div class="page-title">Fuel Logging</div>
+          <div class="page-sub">Track fuel usage and receipts per trip</div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-label">Current Tank</div><div class="stat-value">62%</div></div>
+          <div class="stat-card"><div class="stat-label">Trip Fuel Used</div><div class="stat-value">18 L</div></div>
+          <div class="stat-card"><div class="stat-label">Last Refill</div><div class="stat-value">₱2,150</div></div>
+          <div class="stat-card"><div class="stat-label">Efficiency</div><div class="stat-value">8.6 km/L</div></div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-box-title"><div class="ai-dot"></div> Fuel AI Tip</div>
+          <p>Maintain speed between 40-55 km/h on highway segments to improve fuel efficiency by up to 6% this route.</p>
+        </div>
+
+        <div class="section-title">Recent Logs</div>
+        <div class="card" style="margin:0 16px">
+          <div class="alert-item"><div class="alert-dot green"></div><div class="alert-text"><strong>Refuel at Petron Panabo</strong><span>34 L added · Receipt uploaded</span></div><div class="alert-time">Yesterday</div></div>
+          <div class="alert-item"><div class="alert-dot blue"></div><div class="alert-text"><strong>Trip start level</strong><span>80% tank · odometer 45,200 km</span></div><div class="alert-time">8:30 AM</div></div>
+        </div>
+      </div>
+
+      <!-- DRIVER: CARGO -->
+      <div class="screen" id="s-cargo">
+        <div class="page-head">
+          <div class="page-title">Cargo Photo Capture</div>
+          <div class="page-sub">Pickup and drop-off proof management</div>
+        </div>
+
+        <div class="section-title">Photo Tasks</div>
+        <div class="service-list">
+          <div class="service-card scheduled">
+            <div>
+              <div class="service-name">Pickup Evidence</div>
+              <div class="service-type">Take 3 photos before departure</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> 3/3 uploaded</div>
+            </div>
+            <div class="service-pill blue">Complete</div>
+          </div>
+          <div class="service-card upcoming">
+            <div>
+              <div class="service-name">Drop-off Evidence</div>
+              <div class="service-type">Take unloading + signature photos</div>
+              <div class="service-meta"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg> Pending arrival</div>
+            </div>
+            <div class="service-pill yellow">Pending</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:0 16px 80px">
+          <div class="card-body">
+            <div style="font-weight:700">Issue Reporting and Offline Mode</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.55">If signal is unavailable, photos and notes are stored locally and auto-synced when GPS/data reconnects. Drivers can flag incidents for owner review in real time once synced.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- PROFILE -->
       <div class="screen" id="s-profile">
         <div class="page-head">
@@ -957,11 +1177,11 @@ body{
           <div class="profile-row">
             <div class="profile-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
             <div>
-              <div class="profile-name">Roberto Cruz</div>
-              <div class="profile-role">Fleet Manager</div>
+              <div class="profile-name" id="profileName">Roberto Cruz</div>
+              <div class="profile-role" id="profileRole">Fleet Manager</div>
             </div>
           </div>
-          <div class="profile-org"><svg viewBox="0 0 24 24"><path d="M6 8h12M6 12h12M6 16h8"/></svg> Cruz Transport Services · Tagum City, Davao del Norte</div>
+          <div class="profile-org" id="profileOrg"><svg viewBox="0 0 24 24"><path d="M6 8h12M6 12h12M6 16h8"/></svg><span id="profileOrgText">Cruz Transport Services · Tagum City, Davao del Norte</span></div>
         </div>
 
         <div class="info-card card">
@@ -1192,11 +1412,11 @@ body{
     </div>
 
     <div class="bottom-nav" id="bottomNav">
-      <button class="nav-btn active" data-screen="dashboard"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zM13 21h8v-8h-8v8zM13 3v8h8V3h-8zM3 21h8v-6H3v6z"/></svg>Dashboard</button>
-      <button class="nav-btn" data-screen="fleet"><svg viewBox="0 0 24 24"><path d="M3 12h18v2H3zM5 8h14v2H5z"/></svg>Fleet</button>
-      <button class="nav-btn" data-screen="drivers"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1H6z"/></svg>Drivers</button>
-      <button class="nav-btn" data-screen="service"><svg viewBox="0 0 24 24"><path d="M19 7l-7 7-5-5"/></svg>Service</button>
-      <button class="nav-btn" data-screen="profile"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zM3 21a9 9 0 0118 0"/></svg>Profile</button>
+      <button class="nav-btn active" id="navBtn1" data-screen="dashboard"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zM13 21h8v-8h-8v8zM13 3v8h8V3h-8zM3 21h8v-6H3v6z"/></svg><span class="nav-label">Dashboard</span></button>
+      <button class="nav-btn" id="navBtn2" data-screen="fleet"><svg viewBox="0 0 24 24"><path d="M3 12h18v2H3zM5 8h14v2H5z"/></svg><span class="nav-label">Fleet</span></button>
+      <button class="nav-btn" id="navBtn3" data-screen="drivers"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1H6z"/></svg><span class="nav-label">Drivers</span></button>
+      <button class="nav-btn" id="navBtn4" data-screen="service"><svg viewBox="0 0 24 24"><path d="M19 7l-7 7-5-5"/></svg><span class="nav-label">Service</span></button>
+      <button class="nav-btn" id="navBtn5" data-screen="profile"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zM3 21a9 9 0 0118 0"/></svg><span class="nav-label">Profile</span></button>
     </div>
   </div>
 
@@ -1206,18 +1426,22 @@ body{
     <div class="drawer-top">
       <div class="drawer-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
       <div>
-        <div class="drawer-name">Roberto Cruz</div>
-        <div class="drawer-role">Fleet Manager</div>
+        <div class="drawer-name" id="drawerName">Roberto Cruz</div>
+        <div class="drawer-role" id="drawerRole">Fleet Manager</div>
       </div>
       <button class="drawer-close" id="drawerClose" type="button">✕</button>
     </div>
     <div class="drawer-nav">
-      <button class="drawer-item" data-screen="dashboard"><span class="drawer-item-left">Dashboard</span></button>
-      <button class="drawer-item" data-screen="fleet"><span class="drawer-item-left">Fleet Management</span></button>
-      <button class="drawer-item" data-screen="drivers"><span class="drawer-item-left">Drivers<span class="drawer-badge">6</span></span></button>
-      <button class="drawer-item" data-screen="service"><span class="drawer-item-left">Maintenance<span class="drawer-badge">3</span></span></button>
-      <button class="drawer-item" data-screen="analytics"><span class="drawer-item-left">Analytics & Reports</span></button>
-      <button class="drawer-item" data-screen="documents"><span class="drawer-item-left">Documents / Eligibility</span></button>
+      <button class="drawer-item" data-screen="dashboard" data-role="owner"><span class="drawer-item-left">Dashboard</span></button>
+      <button class="drawer-item" data-screen="fleet" data-role="owner"><span class="drawer-item-left">Fleet Management</span></button>
+      <button class="drawer-item" data-screen="drivers" data-role="owner"><span class="drawer-item-left">Drivers<span class="drawer-badge">6</span></span></button>
+      <button class="drawer-item" data-screen="service" data-role="owner"><span class="drawer-item-left">Maintenance<span class="drawer-badge">3</span></span></button>
+      <button class="drawer-item" data-screen="analytics" data-role="owner"><span class="drawer-item-left">Analytics & Reports</span></button>
+      <button class="drawer-item" data-screen="documents" data-role="owner"><span class="drawer-item-left">Documents / Eligibility</span></button>
+      <button class="drawer-item" data-screen="mytrip" data-role="driver"><span class="drawer-item-left">My Assigned Trip</span></button>
+      <button class="drawer-item" data-screen="tripstatus" data-role="driver"><span class="drawer-item-left">Trip Status Updates</span></button>
+      <button class="drawer-item" data-screen="fuellog" data-role="driver"><span class="drawer-item-left">Fuel Logging</span></button>
+      <button class="drawer-item" data-screen="cargo" data-role="driver"><span class="drawer-item-left">Cargo Photo Capture</span></button>
       <button class="drawer-item" data-screen="settings"><span class="drawer-item-left">Settings</span></button>
       <button class="drawer-item" data-screen="help"><span class="drawer-item-left">Help & Support</span></button>
       <button class="drawer-item" id="logoutBtn" type="button"><span class="drawer-item-left">Logout</span></button>
@@ -1271,13 +1495,24 @@ body{
   const signInButton = document.getElementById('signinBtn');
   const loginScreen = document.getElementById('loginScreen');
   const appShell = document.getElementById('appShell');
+  const loginEmail = document.getElementById('loginEmail');
   const togglePw = document.getElementById('togglePw');
   const loginPass = document.getElementById('loginPass');
+  const ownerRoleBtn = document.getElementById('ownerRoleBtn');
+  const driverRoleBtn = document.getElementById('driverRoleBtn');
+  const headerRoleSub = document.getElementById('headerRoleSub');
+  const roleChip = document.getElementById('roleChip');
+  const drawerName = document.getElementById('drawerName');
+  const drawerRole = document.getElementById('drawerRole');
+  const profileName = document.getElementById('profileName');
+  const profileRole = document.getElementById('profileRole');
+  const profileOrgText = document.getElementById('profileOrgText');
   const menuBtn = document.getElementById('menuBtn');
   const bellBtn = document.getElementById('bellBtn');
   const drawer = document.getElementById('drawer');
   const drawerClose = document.getElementById('drawerClose');
   const drawerItems = Array.from(document.querySelectorAll('.drawer-item'));
+  const roleAwareDrawerItems = Array.from(document.querySelectorAll('.drawer-item[data-role]'));
   const logoutBtn = document.getElementById('logoutBtn');
   const overlayBackdrop = document.getElementById('overlayBackdrop');
   const notifPanel = document.getElementById('notifPanel');
@@ -1293,10 +1528,87 @@ body{
   const bodyEl = document.body;
 
   let unreadCount = 2;
-  const currentUser = 'Roberto Cruz';
+  let activeRole = 'owner';
+
+  const roleConfig = {
+    owner: {
+      loginEmail: 'demo@fleetsense.ph',
+      userName: 'Roberto Cruz',
+      userRole: 'Fleet Manager',
+      profileOrg: 'Cruz Transport Services · Tagum City, Davao del Norte',
+      headerSub: 'AI-Assisted Fleet Management',
+      chip: 'Owner Mode',
+      defaultScreen: 'dashboard',
+      nav: [
+        { screen: 'dashboard', label: 'Dashboard' },
+        { screen: 'fleet', label: 'Fleet' },
+        { screen: 'drivers', label: 'Drivers' },
+        { screen: 'service', label: 'Service' },
+        { screen: 'profile', label: 'Profile' }
+      ]
+    },
+    driver: {
+      loginEmail: 'driver@fleetsense.ph',
+      userName: 'Pedro Reyes',
+      userRole: 'Driver',
+      profileOrg: 'Assigned to TRK-007 · Tagum to Panabo Route',
+      headerSub: 'Driver Operations Workspace',
+      chip: 'Driver Mode',
+      defaultScreen: 'mytrip',
+      nav: [
+        { screen: 'mytrip', label: 'My Trip' },
+        { screen: 'tripstatus', label: 'Status' },
+        { screen: 'fuellog', label: 'Fuel' },
+        { screen: 'cargo', label: 'Cargo' },
+        { screen: 'profile', label: 'Profile' }
+      ]
+    }
+  };
+
+  function setRoleButtonState(role) {
+    ownerRoleBtn.classList.toggle('active', role === 'owner');
+    driverRoleBtn.classList.toggle('active', role === 'driver');
+  }
+
+  function configureBottomNav(role) {
+    const config = roleConfig[role];
+    navButtons.forEach((btn, index) => {
+      const item = config.nav[index];
+      btn.dataset.screen = item.screen;
+      const label = btn.querySelector('.nav-label');
+      if (label) label.textContent = item.label;
+    });
+  }
+
+  function configureDrawer(role) {
+    roleAwareDrawerItems.forEach(item => {
+      item.style.display = item.dataset.role === role ? 'flex' : 'none';
+    });
+  }
+
+  function applyRole(role, shouldUpdateEmail = true) {
+    activeRole = role;
+    const config = roleConfig[role];
+    setRoleButtonState(role);
+    configureBottomNav(role);
+    configureDrawer(role);
+
+    if (headerRoleSub) headerRoleSub.textContent = config.headerSub;
+    if (roleChip) roleChip.textContent = config.chip;
+    if (drawerName) drawerName.textContent = config.userName;
+    if (drawerRole) drawerRole.textContent = config.userRole;
+    if (profileName) profileName.textContent = config.userName;
+    if (profileRole) profileRole.textContent = config.userRole;
+    if (profileOrgText) profileOrgText.textContent = config.profileOrg;
+    if (shouldUpdateEmail && loginEmail) loginEmail.value = config.loginEmail;
+  }
 
   function updateBadge() {
     if (!bellBadge) return;
+    if (typeof settings !== 'undefined' && !settings.notif) {
+      bellBadge.style.display = 'none';
+      return;
+    }
     if (unreadCount > 0) {
       bellBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
       bellBadge.style.display = 'flex';
@@ -1327,6 +1639,10 @@ body{
   }
 
   function setActiveScreen(screenId) {
+    const targetScreenId = `s-${screenId}`;
+    const screenExists = screens.some(screen => screen.id === targetScreenId);
+    if (!screenExists) return;
+
     screens.forEach(screen => screen.classList.toggle('active', screen.id === `s-${screenId}`));
     navButtons.forEach(btn => {
       const active = btn.dataset.screen === screenId;
@@ -1341,11 +1657,18 @@ body{
     });
   }
 
+  if (ownerRoleBtn) {
+    ownerRoleBtn.addEventListener('click', () => applyRole('owner'));
+  }
+  if (driverRoleBtn) {
+    driverRoleBtn.addEventListener('click', () => applyRole('driver'));
+  }
+
   if (signInButton) {
     signInButton.addEventListener('click', () => {
       loginScreen.classList.add('hidden');
       appShell.style.display = 'flex';
-      setActiveScreen('dashboard');
+      setActiveScreen(roleConfig[activeRole].defaultScreen);
     });
   }
 
@@ -1365,10 +1688,9 @@ body{
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-      const loginEmail = document.getElementById('loginEmail');
       loginScreen.classList.remove('hidden');
       appShell.style.display = 'none';
-      if (loginEmail) loginEmail.value = '';
+      applyRole('owner');
       if (loginPass) loginPass.value = '';
       unreadCount = 2;
       updateBadge();
@@ -1491,6 +1813,7 @@ body{
     if (event.key === 'Escape') closeOverlays();
   });
 
+  applyRole('owner');
   updateBadge();
 </script>
 </body>

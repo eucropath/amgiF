@@ -1,0 +1,30 @@
+<svg width="100%" viewBox="0 0 680 260" role="img" xmlns="http://www.w3.org/2000/svg"><defs><mask id="imagine-text-gaps-9c01zl" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="260" fill="white"/><rect x="244.00001525878906" y="71.0666732788086" width="429.5234375" height="105.33333587646484" fill="black" rx="2"/><rect x="246.00001525878906" y="174.1333465576172" width="288.16668701171875" height="21.066667556762695" fill="black" rx="2"/><rect x="246.00001525878906" y="198.2666778564453" width="200.11668395996094" height="18.933334350585938" fill="black" rx="2"/></mask></defs>
+  <title>FleetSense logo</title>
+  <desc>FleetSense logo with truck and GPS signal icon, tagline Smart Fleet Management for Tagum City</desc>
+
+  <rect x="40" y="40" width="180" height="180" rx="24" fill="#1D4ED8"/>
+
+  <rect x="62" y="118" width="90" height="54" rx="6" fill="#ffffff"/>
+  <rect x="134" y="102" width="52" height="70" rx="6" fill="#BFDBFE"/>
+  <rect x="140" y="110" width="40" height="26" rx="3" fill="#1D4ED8"/>
+
+  <circle cx="78" cy="174" r="14" fill="#1E3A8A"/>
+  <circle cx="78" cy="174" r="7" fill="#93C5FD"/>
+  <circle cx="158" cy="174" r="14" fill="#1E3A8A"/>
+  <circle cx="158" cy="174" r="7" fill="#93C5FD"/>
+
+  <rect x="62" y="118" width="18" height="30" rx="3" fill="#93C5FD" opacity="0.4"/>
+
+  <circle cx="155" cy="76" r="10" fill="#F59E0B"/>
+  <circle cx="155" cy="76" r="18" fill="none" stroke="#F59E0B" stroke-width="2.5" opacity="0.5"/>
+  <circle cx="155" cy="76" r="26" fill="none" stroke="#F59E0B" stroke-width="1.5" opacity="0.25"/>
+  <line x1="155" y1="86" x2="152" y2="102" stroke="#F59E0B" stroke-width="2" stroke-dasharray="3,2"/>
+
+  <text x="248" y="152" fill="#1D4ED8" style="font-family:'Barlow Condensed', sans-serif;font-size:72px;font-weight:900;">Fleet<tspan fill="#F59E0B">Sense</tspan></text>
+
+  <line x1="248" y1="168" x2="620" y2="168" stroke="#E5E7EB" stroke-width="1" mask="url(#imagine-text-gaps-9c01zl)"/>
+
+  <text x="250" y="190" fill="#6B7280" letter-spacing="3" style="font-family:Barlow, sans-serif;font-size:15px;font-weight:500;">SMART FLEET MANAGEMENT</text>
+  <text x="250" y="212" fill="#9CA3AF" style="font-family:Barlow, sans-serif;font-size:13px;font-weight:400;">Tagum City, Davao del Norte</text>
+
+</svg>
